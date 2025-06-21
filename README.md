@@ -11,6 +11,7 @@ Setup Instruction - Creating and running the server
 
 5. Edit the package.json file  to include "start": "node index.js", "dev" : "nodemon index.js" within the scripts as shown below. This offers the options to run the app using either:  npm run dev for nodemon or npm run start. Ensure file name containing server is the same as that used in the scripts otherwise app won't run.
 
+```json 
 
  "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -33,6 +34,7 @@ This is a testing endpoint used for testing the app and uses get request to get 
 
 This  uses get request and displays list all items in the datastore with success message and code (200) and corresponding , example of response
 
+```json 
 {
     "message": "succss",
     "dataStore": [
@@ -52,6 +54,8 @@ This  uses get request and displays list all items in the datastore with success
 3. Add item:  http://localhost:8000/add-item
 This endpoin uses post request and allows addition of an item to the datastore, the name and discription of the item must be provided while the item id is automatically assiigned upon submission of the request. Success message is received as well as the item added. If any required data is not provided , it raises error and displays the code 400 with error message.
 example of request and response 
+
+```json
 
 Request : {
     
@@ -79,7 +83,7 @@ Request
 
 http://localhost:8000/item/2 
 
-
+```json 
 Response
 {
     "message": "success",
@@ -120,7 +124,9 @@ The method put is used to send request to http://localhost:8000/update-item/2, w
 
 
 
-item in datastore before udpdate
+item in datastore before update
+
+```json 
 
 {
         "id": "2",
@@ -151,3 +157,10 @@ Response
 }
 
 
+![delete item ](images/delete_item.png)
+
+
+![add item](images/add_item.png)
+
+
+![test image](https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png)
