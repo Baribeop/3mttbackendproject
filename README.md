@@ -157,7 +157,9 @@ Response
 }
 
 
-![delete item ](https://github.com/Baribeop/3mttbackendproject/tree/main/images/delete_item.png)
+
+https://raw.githubusercontent.com/Baribeop/3mttbackendproject/main/images/delete_item.png
+
 
 
 ![add item](https://github.com/Baribeop/3mttbackendproject/tree/main/images/add_item.png)
