@@ -163,4 +163,8 @@ Response
 ![add item](images/add_item.png)
 
 
-![test image](https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png)
+![all item](images/all_item.png)
+
+![each item](images/each_item.png)
+
+![update item](images/update_item.png)
