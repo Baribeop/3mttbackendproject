@@ -1,24 +1,33 @@
 const express = require('express')
-// const  cors = require("cors")
+const  cors = require("cors")
 
 const app = express()
 
 
 app.use(express.json())
-// app.use(cors())
+app.use(cors())
 
 const PORT = 8000
 
 
+try {
+    
 app.listen( PORT, ()=> {
 
     console.log(`Server running on port: ${PORT}`)
 
 })
+    
+} catch (error) {
+
+    console.error("server connection fail", error.mesaage)
+    
+}
+
 
 let dataStore = []
 
-app.get("/home", (req, res)=>{
+app.get("/", (req, res)=>{
     return  res.status(200).json({message: "Hello World"})
 })
 
@@ -27,12 +36,12 @@ app.get("/home", (req, res)=>{
 // app.use("api/", routes)
 
 
-app.get("/all-items", (req, res) =>{
+app.get("/items", (req, res) =>{
 
     try {
         const allItems =  dataStore
         
-        return res.status(200).json({message: "succss", allItems})
+        return res.status(200).json({message: "success", allItems})
         
     } catch (error) {return res.status(400).json({message: error.message})}
 
@@ -41,29 +50,29 @@ app.get("/all-items", (req, res) =>{
 
 
 
-app.post("/add-item",  (req, res) =>{
+app.post("/items",  (req, res) =>{
     try {
         const {name, description} =  req.body
 
         // if(!id){ return res.status(400).json({message: "please provide item's id"})}
 
-        if(!name){ return res.status(404).json({message: "please provide name of item"})}
+        if(!name){ return res.status(400).json({message: "please provide name of item"})}
 
-        if(!description){ return res.status(404).json({message: "please provide item description"})}
+        if(!description){ return res.status(400).json({message: "please provide item description"})}
 
 
         itemListLength = dataStore.length
 
 
         const newItem = {
-            'id': itemListLength + 1,
+            'id': Math.random() * 100000000000000000,
             'name' : name,
             "description" : description
         }
 
         dataStore.push(newItem)         
 
-        return res.status(200).json({mesaage: 'Succesfully added item', newItem})
+        return res.status(201).json({message: 'Succesfully added item', newItem})
 
     } catch (error) {
         return res.status(400).json({message: error.mesaage})
@@ -71,7 +80,7 @@ app.post("/add-item",  (req, res) =>{
 })
 
 
-app.get("/item/:id", async(req, res) =>{
+app.get("/items/:id", async(req, res) =>{
 
     try {
         const {id} = req.params
@@ -79,7 +88,7 @@ app.get("/item/:id", async(req, res) =>{
         console.log(id)
     
         if (!id ) {
-            return res.status(404).json({message: "item id is not provided"})
+            return res.status(400).json({message: "item id is not provided"})
         }
 
         if(dataStore.length == 0){ return res.status(404).json({message: "no item is found"})}
@@ -98,22 +107,22 @@ app.get("/item/:id", async(req, res) =>{
 })
 
 
-app.delete("/delete-item/:id", async(req, res)=>{
+app.delete("/items/:id", async(req, res)=>{
     try {
 
         const {id} = req.params
         // console.log(id)
 
-        if (!id || id.trim() == ''){return res.status(404).json({message: "item id is not provided"})}
+        if (!id){return res.status(404).json({message: "item id is not provided"})}
 
-        if(dataStore.length == 0){ return res.status(404).json({message: "no item is found"})}
+        // if(dataStore.length == 0){ return res.status(404).json({message: "no item is found"})}
 
         const itemIndex=  dataStore.findIndex(item =>{
             // return item.id == Number(id)
             return item.id == Number(id)
         })
 
-        if(itemIndex === -1){ return res.status(404).json({message: "item not found"})}
+        if(itemIndex === -1){ return res.status(400).json({message: "Item Not Found"})}
 
         // const itemIndex = dataStore.indexOf(findItemById)
 
@@ -122,8 +131,6 @@ app.delete("/delete-item/:id", async(req, res)=>{
         return res.status(200).json({message: "successfully deleted item", deleteItem })
         
     } catch (error) {
-
-
         return res.status(400).json({message: error.message})
         
     }
@@ -131,18 +138,18 @@ app.delete("/delete-item/:id", async(req, res)=>{
 
 
 
-app.put("/update-item/:id", async(req, res)=>{
+app.put("/items/:id", async(req, res)=>{
     try {
         const {id} = req.params
         const {name, description} = req.body
 
-        if(!id){return res.status(404).json({message: "Id missing"})}
+        if(!id){return res.status(400).json({message: "Id missing"})}
 
         const itemIndex = dataStore.findIndex(item =>{return item.id == Number(id)})
 
         if(itemIndex  == -1){return res.status(404).json({message: "item not found"})}
 
-        dataStore[itemIndex] = {"id": id, "name": name, "discription": description}
+        dataStore[itemIndex] = {"id": id, "name": name, "description": description}
 
         return res.status(200).json({message: "Successfully updated an item",  updatedItem : dataStore[itemIndex] })
 
